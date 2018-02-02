@@ -1,4 +1,4 @@
-if [[ $('uname') == 'Linux' ]]; then
+if [[ "$OSTYPE" == linux* ]]; then
     local _sublime_linux_paths > /dev/null 2>&1
     _sublime_linux_paths=(
         "$HOME/bin/sublime_text"
@@ -56,3 +56,63 @@ elif [[ "$OSTYPE" = 'cygwin' ]]; then
 fi
 
 alias stt='st .'
+
+find_project()
+{
+    local PROJECT_ROOT="${PWD}"
+    local FINAL_DEST="."
+
+    while [[ $PROJECT_ROOT != "/" && ! -d "$PROJECT_ROOT/.git" ]]; do
+        PROJECT_ROOT=$(dirname $PROJECT_ROOT)
+    done
+
+    if [[ $PROJECT_ROOT != "/" ]]; then
+        local PROJECT_NAME="${PROJECT_ROOT##*/}"
+
+        local SUBL_DIR=$PROJECT_ROOT
+        while [[ $SUBL_DIR != "/" && ! -f "$SUBL_DIR/$PROJECT_NAME.sublime-project" ]]; do
+            SUBL_DIR=$(dirname $SUBL_DIR)
+        done
+
+        if [[ $SUBL_DIR != "/" ]]; then
+            FINAL_DEST="$SUBL_DIR/$PROJECT_NAME.sublime-project"
+        else
+            FINAL_DEST=$PROJECT_ROOT
+        fi
+    fi
+
+    st $FINAL_DEST
+}
+
+function create_project() {
+
+    local _target=$1
+
+    if [[ "${_target}" == "" ]]; then
+        _target=$(pwd);
+    elif [[ ! -d ${_target} ]]; then
+        echo "${_target} is not a valid directory"
+        return 1
+    fi
+
+    local _sublime_project_file=$_target/$(basename $_target).sublime-project
+
+    if [[ ! -f $_sublime_project_file ]]; then
+        
+        touch $_sublime_project_file
+
+        echo -e "{"                         >> $_sublime_project_file
+        echo -e "\t\"folders\":"            >> $_sublime_project_file
+        echo -e "\t\t[{"                    >> $_sublime_project_file
+        echo -e "\t\t\t\"path\": \".\","    >> $_sublime_project_file
+        echo -e "\t\t\t\"file_exclude_patterns\": []" >> $_sublime_project_file
+        echo -e "\t\t}]"                    >> $_sublime_project_file
+        echo -e "}"                         >> $_sublime_project_file
+
+        echo -e "New Sublime Text project created:\n\t${_sublime_project_file}"
+
+    fi
+}
+
+alias stp=find_project
+alias stn=create_project
