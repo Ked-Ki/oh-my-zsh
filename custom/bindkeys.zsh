@@ -1,2 +1,2 @@
 bindkey "^R" history-incremental-search-backward 
-bindkey -M viins 'jj' vi-cmd-mode
+bindkey -v 'jj' vi-cmd-mode

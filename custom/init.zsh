@@ -1,2 +1,2 @@
 ([[ $- != *i* ]] || [[ -o login ]]) && return
-[[ -z "$TMUX" ]] && exec tmux
+[[ -z "$TMUX" ]] && (tmux attach || tmux)
