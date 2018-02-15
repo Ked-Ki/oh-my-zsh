@@ -20,9 +20,16 @@ else
   NORMAL=""
 fi
 
+upgrade() {
+  git merge --stat upstream/master &&
+  git pull --rebase --stat origin master
+
+  return $?
+}
+
 printf "${BLUE}%s${NORMAL}\n" "Updating Oh My Zsh"
 cd "$ZSH"
-if git pull --rebase --stat origin master
+if upgrade
 then
   printf '%s' "$GREEN"
   printf '%s\n' '         __                                     __   '
