@@ -18,22 +18,20 @@ alias less='less -S'
 alias zless='zless -S'
 alias sl=ls
 
+alias acc='list_dsnet.sh -a'
+alias ss='list_dsnet.sh -s'
+alias init='list_dsnet.sh -i'
+
+alias git-remove-untracked='git fetch --prune && git branch -r | awk "{print \$1}" | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk "{print \$1}" | xargs git branch -d'
+
 if [ "$(hostname)" = "raven.local" ]; then
   # raven only
-  alias pip-anaconda2='/opt/anaconda2/anaconda2/bin/pip'
-  alias pip-brew2='/usr/local/bin/pip2'
-  alias pip-brew3='/usr/local/bin/pip3'
-  alias python-anaconda2='/opt/anaconda2/anaconda2/bin/python'
-  alias python-brew2='/usr/local/bin/python2'
-  alias python-brew3='/usr/local/bin/python3'
-  alias python-mac2='/usr/bin/python'
-
-  alias tlch='todo.sh lsgc @work'
-  alias tlph='todo.sh lsgp @work'
+  alias tlch='todo.sh lsgc @work | less'
+  alias tlph='todo.sh lsgp @work | less'
 elif [ "$(hostname)" = "lenore" ]; then
   # lenore only
-  alias tlch='todo.sh lsgc @home'
-  alias tlph='todo.sh lsgp @home'
+  alias tlch='todo.sh lsgc @home | less'
+  alias tlph='todo.sh lsgp @home | less'
 fi
 
 # todo
@@ -44,3 +42,7 @@ alias tl='todo.sh list'
 alias tlc='todo.sh lsgc'
 alias tlp='todo.sh lsgp'
 alias ts='todo.sh pom start'
+alias tpr='todo.sh pom_report'
+alias tmtg='ts $(tl +ongoing meetings | head -1 | cut -d" " -f1)'
+alias tslk='ts $(tl +ongoing slack | head -1 | cut -d" " -f1)'
+alias tqst='ts $(tl +ongoing questions | head -1 | cut -d" " -f1)'
