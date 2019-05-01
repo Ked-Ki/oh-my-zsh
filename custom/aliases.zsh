@@ -8,7 +8,11 @@ alias findjava=findjava_impl
 alias fj='findjava .'
 
 jqless_impl() {
-  jq . "${1}" | less
+  if [ -z ${1+x} ]; 
+  then jq . - ; 
+  else jq . "${1}" ; 
+  fi |
+    less
 }
 alias jqless=jqless_impl
 alias jsonhead='sed '\''/^}$/q'\'
