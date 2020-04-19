@@ -22,19 +22,9 @@ alias less='less -S'
 alias zless='zless -S'
 alias sl=ls
 
-alias acc='list_dsnet.sh -a'
-alias ss='list_dsnet.sh -s'
-alias init='list_dsnet.sh -i'
-alias dsnum='list_dsnet.sh -d'
-
 alias git-remove-untracked='git fetch --prune && git branch -r | awk "{print \$1}" | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk "{print \$1}" | xargs git branch -d'
 
-# get to commonly used files
-alias lab_notes='vim ~/lab_notes.md'
-alias lbn=lab_notes
-alias browser_lab_notes='open -a /Applications/Firefox.app ~/lab_notes.md'
-alias blbn=browser_lab_notes
-
+# pomodoro is from https://github.com/carlmjohnson/pomodoro
 alias pom='noti pomodoro'
 
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
